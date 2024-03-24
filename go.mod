@@ -1,4 +1,4 @@
-module jeopardy-trainer
+module github.com/chancehl/jeopardy-trainer
 
 go 1.22.1
 

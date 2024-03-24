@@ -6,12 +6,45 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	r := gin.Default()
+type JeopardyGame struct {
+	Seed string
+	Questions []JeopardyQuestion
+}
 
-	r.GET("/ping", func(ctx *gin.Context) {
+type JeopardyQuestion struct {
+	Question string
+	Value int32
+	Id string
+}
+
+func main() {
+	router := gin.Default()
+
+	router.LoadHTMLGlob("templates/*")
+
+	router.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
-	r.Run()
+	router.GET("/", func(ctx *gin.Context) {
+        game := JeopardyGame{
+            Seed: "12345abcde",
+			Questions: []JeopardyQuestion {
+				{
+					Question: "Who wrote 'To Kill a Mockingbird'?",
+					Value: 200,
+					Id: "1",
+				},
+				{
+					Question: "Who wrote 'To Kill a Mockingbird'?",
+					Value: 200,
+					Id: "2",
+				},
+			},
+        }
+        
+        ctx.HTML(200, "index.html", game)
+	})
+
+	router.Run()
 }

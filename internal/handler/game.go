@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/chancehl/jeopardy-trainer/internal/model"
 	"github.com/chancehl/jeopardy-trainer/internal/parser"
 	"github.com/gin-gonic/gin"
@@ -19,7 +17,9 @@ func GetGame(ctx *gin.Context) {
 		Rounds: rounds,
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"game": game})
+	body := gin.H{"game": game}
+
+	ctx.JSON(200, body)
 }
 
 func CreateGame(ctx *gin.Context) {
@@ -27,5 +27,7 @@ func CreateGame(ctx *gin.Context) {
 
 	game := model.GenerateJeopardyGame(questions)
 
-	ctx.JSON(http.StatusOK, gin.H{"game": game})
+	body := gin.H{"game": game}
+
+	ctx.JSON(200, body)
 }

@@ -11,25 +11,19 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.LoadHTMLGlob("templates/*")
-
 	router.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
-	})
-
-	router.GET("/", func(ctx *gin.Context) {
-		ctx.File("./templates/index.html")
 	})
 
 	router.GET("/game/:seed", func(ctx *gin.Context) {
 		allQuestions := utils.LoadQuestions("./questions.json")
 
 		seed := ctx.Param("seed")
-		questions := utils.GenerateQuestionsFromSeed(seed, allQuestions);
+		rounds := utils.GenerateRoundsFromSeed(seed, allQuestions)
 
-		game := structs.JeopardyGame {
-			Seed: seed,
-			Questions: questions,
+		game := structs.JeopardyGame{
+			Seed:   seed,
+			Rounds: rounds,
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"game": game})

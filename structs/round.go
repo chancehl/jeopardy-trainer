@@ -1,6 +1,6 @@
 package structs
 
-type JeopardyGame struct {
-	Seed string
+type JeopardyRound struct {
+	Name string
 	Questions []JeopardyQuestion
 }

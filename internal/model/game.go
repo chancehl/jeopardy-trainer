@@ -1,18 +1,16 @@
-package utils
+package model
 
 import (
 	"encoding/base64"
 	"math/rand"
 	"strconv"
 	"strings"
-
-	"github.com/chancehl/jeopardy-trainer/structs"
 )
 
 const CATEGORY_COUNT = 6
 
-func GenerateSeed(rounds []structs.JeopardyRound) string {
-	questions := []structs.JeopardyQuestion{}
+func GenerateSeed(rounds []JeopardyRound) string {
+	questions := []JeopardyQuestion{}
 
 	for _, value := range rounds {
 		questions = append(questions, value.Questions...)
@@ -29,7 +27,7 @@ func GenerateSeed(rounds []structs.JeopardyRound) string {
 	return seed
 }
 
-func GenerateRoundsFromSeed(seed string, allQuestions []structs.JeopardyQuestion) []structs.JeopardyRound {
+func GenerateRoundsFromSeed(seed string, allQuestions []JeopardyQuestion) []JeopardyRound {
 	value, _ := base64.StdEncoding.DecodeString(seed)
 
 	stringIds := strings.Split(string(value), ",")
@@ -42,9 +40,9 @@ func GenerateRoundsFromSeed(seed string, allQuestions []structs.JeopardyQuestion
 		ids = append(ids, i)
 	}
 
-	jeopardyQuestions := []structs.JeopardyQuestion{}
-	doubleJeopardyQuestions := []structs.JeopardyQuestion{}
-	finalJeopardyQuestions := []structs.JeopardyQuestion{}
+	jeopardyQuestions := []JeopardyQuestion{}
+	doubleJeopardyQuestions := []JeopardyQuestion{}
+	finalJeopardyQuestions := []JeopardyQuestion{}
 
 	for _, id := range ids {
 		for _, question := range allQuestions {
@@ -60,26 +58,26 @@ func GenerateRoundsFromSeed(seed string, allQuestions []structs.JeopardyQuestion
 		}
 	}
 
-	jeopardyRound := structs.JeopardyRound{
+	jeopardyRound := JeopardyRound{
 		Name:      "Jeopardy",
 		Questions: jeopardyQuestions,
 	}
 
-	doubleJeopardyRound := structs.JeopardyRound{
+	doubleJeopardyRound := JeopardyRound{
 		Name:      "DoubleJeopardy",
 		Questions: doubleJeopardyQuestions,
 	}
-	
-	finalJeopardyRound := structs.JeopardyRound{
+
+	finalJeopardyRound := JeopardyRound{
 		Name:      "FinalJeopardy",
 		Questions: finalJeopardyQuestions,
 	}
 
-	return []structs.JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
+	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
 }
 
-func GroupByRound(questions []structs.JeopardyQuestion) map[string][]structs.JeopardyQuestion {
-	grouped := make(map[string][]structs.JeopardyQuestion)
+func GroupByRound(questions []JeopardyQuestion) map[string][]JeopardyQuestion {
+	grouped := make(map[string][]JeopardyQuestion)
 
 	for _, question := range questions {
 		grouped[question.Round] = append(grouped[question.Round], question)
@@ -88,8 +86,8 @@ func GroupByRound(questions []structs.JeopardyQuestion) map[string][]structs.Jeo
 	return grouped
 }
 
-func PickRandomQuestionCategory(questions []structs.JeopardyQuestion) []structs.JeopardyQuestion {
-	categoryQuestions := []structs.JeopardyQuestion{}
+func PickRandomQuestionCategory(questions []JeopardyQuestion) []JeopardyQuestion {
+	categoryQuestions := []JeopardyQuestion{}
 
 	randomIndex := rand.Intn(len(questions))
 	randomQuestion := questions[randomIndex]
@@ -103,15 +101,15 @@ func PickRandomQuestionCategory(questions []structs.JeopardyQuestion) []structs.
 	return categoryQuestions
 }
 
-func PickRandomQuestion(questions []structs.JeopardyQuestion) structs.JeopardyQuestion {
+func PickRandomQuestion(questions []JeopardyQuestion) JeopardyQuestion {
 	randomIndex := rand.Intn(len(questions))
 	randomQuestion := questions[randomIndex]
 
 	return randomQuestion
 }
 
-func PickRandomQuestions(validQuestions []structs.JeopardyQuestion, isFinalJeopardy bool) []structs.JeopardyQuestion {
-	questions := []structs.JeopardyQuestion{}
+func PickRandomQuestions(validQuestions []JeopardyQuestion, isFinalJeopardy bool) []JeopardyQuestion {
+	questions := []JeopardyQuestion{}
 
 	if isFinalJeopardy {
 		questions = append(questions, PickRandomQuestion(validQuestions))
@@ -128,29 +126,29 @@ func PickRandomQuestions(validQuestions []structs.JeopardyQuestion, isFinalJeopa
 	return questions
 }
 
-func GenerateRounds(allQuestions []structs.JeopardyQuestion) []structs.JeopardyRound {
+func GenerateRounds(allQuestions []JeopardyQuestion) []JeopardyRound {
 	grouped := GroupByRound(allQuestions)
 
-	jeopardyRound := structs.JeopardyRound{
+	jeopardyRound := JeopardyRound{
 		Name:      "Jeopardy",
 		Questions: PickRandomQuestions(grouped["Jeopardy"], false),
 	}
 
-	doubleJeopardyRound := structs.JeopardyRound{
+	doubleJeopardyRound := JeopardyRound{
 		Name:      "Jeopardy",
 		Questions: PickRandomQuestions(grouped["DoubleJeopardy"], false),
 	}
 
-	finalJeopardyRound := structs.JeopardyRound{
+	finalJeopardyRound := JeopardyRound{
 		Name:      "Jeopardy",
 		Questions: PickRandomQuestions(grouped["FinalJeopardy"], true),
 	}
 
-	return []structs.JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
+	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
 }
 
-func GenerateJeopardyGame(allQuestions []structs.JeopardyQuestion) structs.JeopardyGame {
-	var game structs.JeopardyGame
+func GenerateJeopardyGame(allQuestions []JeopardyQuestion) JeopardyGame {
+	var game JeopardyGame
 
 	game.Rounds = GenerateRounds(allQuestions)
 	game.Seed = GenerateSeed(game.Rounds)

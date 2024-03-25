@@ -6,6 +6,6 @@ type JeopardyQuestion struct {
 	Round string
 	Value int
 	Answer string
-	Id string
+	Id int
 	GameId int
 }

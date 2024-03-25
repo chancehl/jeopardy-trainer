@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/base64"
 	"math/rand"
+	"strconv"
 	"strings"
 
 	"github.com/chancehl/jeopardy-trainer/structs"
@@ -11,19 +12,41 @@ import (
 const CATEGORY_COUNT = 6
 
 func GenerateSeed(questions []structs.JeopardyQuestion) string {
-	var ids []string
+    ids := make([]string, len(questions))
 
-	for _, question := range questions {
-		ids = append(ids, question.Id)
+	for index, question := range questions {
+		ids[index] = strconv.Itoa(question.Id)
 	}
 
-	// Concatenate all prompts into a single string
-	allPrompts := strings.Join(ids, "")
-
-	// Encode the concatenated string using base64
-	seed := base64.StdEncoding.EncodeToString([]byte(allPrompts))
+	seed := base64.StdEncoding.EncodeToString([]byte(strings.Join(ids, ",")))
 
 	return seed
+}
+
+func GenerateQuestionsFromSeed(seed string, allQuestions []structs.JeopardyQuestion) []structs.JeopardyQuestion {
+	value, _ := base64.StdEncoding.DecodeString(seed)
+
+	stringIds := strings.Split(string(value), ",")
+
+	var ids []int
+
+	for _, str := range stringIds {
+		i, _ := strconv.Atoi(str)
+
+		ids = append(ids, i)
+	}
+	
+	questions := []structs.JeopardyQuestion{}
+
+	for _, id := range ids {
+		for _, question := range allQuestions {
+			if id == question.Id {
+				questions = append(questions, question)
+			}
+		}
+	}
+
+	return questions
 }
 
 func GroupByRound(questions []structs.JeopardyQuestion) map[string][]structs.JeopardyQuestion {

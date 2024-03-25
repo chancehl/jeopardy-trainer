@@ -4,7 +4,8 @@ type JeopardyQuestion struct {
 	Prompt string
 	Category string
 	Round string
-	Value int32
+	Value int
 	Answer string
 	Id string
+	GameId int
 }

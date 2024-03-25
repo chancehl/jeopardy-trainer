@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/base64"
-	"fmt"
 	"math/rand"
 	"strings"
 
@@ -37,49 +36,42 @@ func GroupByRound(questions []structs.JeopardyQuestion) map[string][]structs.Jeo
 	return grouped
 }
 
-func PickRandomQuestionCategory(questions []structs.JeopardyQuestion) string {
-	categories := []string{}
+func PickRandomQuestionCategory(questions []structs.JeopardyQuestion) []structs.JeopardyQuestion {
+	categoryQuestions := []structs.JeopardyQuestion{}
+
+	randomIndex := rand.Intn(len(questions))
+	randomQuestion := questions[randomIndex]
 
 	for _, question := range questions {
-		categories = append(categories, question.Category)
-	}
-
-	randomIndex := rand.Intn(len(categories))
-	randomCategory := categories[randomIndex]
-
-	return randomCategory
-}
-
-func PickQuestionsMatchingCategory(category string) []structs.JeopardyQuestion {
-	questions := []structs.JeopardyQuestion{}
-
-	for _, question := range questions {
-		if question.Category == category {
-			questions = append(questions, question)
+		if question.GameId == randomQuestion.GameId && question.Category == randomQuestion.Category {
+			categoryQuestions = append(categoryQuestions, question)
 		}
 	}
 
-	return questions
+	return categoryQuestions
 }
 
-func PickRandomQuestions(round string, validQuestions []structs.JeopardyQuestion) []structs.JeopardyQuestion {
+func PickRandomQuestion(questions []structs.JeopardyQuestion) structs.JeopardyQuestion {
+	randomIndex := rand.Intn(len(questions))
+	randomQuestion := questions[randomIndex]
+
+	return randomQuestion
+}
+
+func PickRandomQuestions(validQuestions []structs.JeopardyQuestion, isFinalJeopardy bool) []structs.JeopardyQuestion {
 	questions := []structs.JeopardyQuestion{}
 
-	categories := 6
-
-	if round == "FinalJeopardy" {
-		categories = 1
-	}
+	if isFinalJeopardy {
+		questions = append(questions,PickRandomQuestion(validQuestions))
+	} else {
+		categories := 0
 	
-	for ; categories >= 0; {
-		randomCategory := PickRandomQuestionCategory(validQuestions)
-		matchingQuestions := PickQuestionsMatchingCategory(randomCategory)
-
-		questions = append(questions, matchingQuestions...)
-
-		categories--
+		for ; categories < CATEGORY_COUNT; {
+			questions = append(questions, PickRandomQuestionCategory(validQuestions)...)
+	
+			categories++
+		}
 	}
-
 
 	return questions
 }
@@ -89,13 +81,9 @@ func GenerateQuestions(allQuestions []structs.JeopardyQuestion) []structs.Jeopar
 	
 	grouped := GroupByRound(allQuestions)
 
-	for key := range grouped {
-        fmt.Println("Key:", key)
-	}
-
-	questions = append(questions, PickRandomQuestions("Jeopardy", grouped["Jeopardy"])...)
-	questions = append(questions, PickRandomQuestions("DoubleJeopardy", grouped["DoubleJeopardy"])...)
-	questions = append(questions, PickRandomQuestions("FinalJeopardy", grouped["FinalJeopardy"])...)
+	questions = append(questions, PickRandomQuestions(grouped["Jeopardy"], false)...)
+	questions = append(questions, PickRandomQuestions(grouped["DoubleJeopardy"], false)...)
+	questions = append(questions, PickRandomQuestions(grouped["FinalJeopardy"], true)...)
 
 	return questions
 }

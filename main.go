@@ -3,19 +3,9 @@ package main
 import (
 	"net/http"
 
+	"github.com/chancehl/jeopardy-trainer/utils"
 	"github.com/gin-gonic/gin"
 )
-
-type JeopardyGame struct {
-	Seed string
-	Questions []JeopardyQuestion
-}
-
-type JeopardyQuestion struct {
-	Question string
-	Value int32
-	Id string
-}
 
 func main() {
 	router := gin.Default()
@@ -27,23 +17,15 @@ func main() {
 	})
 
 	router.GET("/", func(ctx *gin.Context) {
-        game := JeopardyGame{
-            Seed: "12345abcde",
-			Questions: []JeopardyQuestion {
-				{
-					Question: "Who wrote 'To Kill a Mockingbird'?",
-					Value: 200,
-					Id: "1",
-				},
-				{
-					Question: "Who wrote 'To Kill a Mockingbird'?",
-					Value: 200,
-					Id: "2",
-				},
-			},
-        }
-        
-        ctx.HTML(200, "index.html", game)
+		ctx.File("./templates/index.html")
+	})
+
+	router.POST("/game", func(ctx *gin.Context) {
+		questions := utils.LoadQuestions("./questions.json")
+
+		game := utils.GenerateJeopardyGame(questions)
+
+		ctx.JSON(http.StatusOK, gin.H{"game": game})
 	})
 
 	router.Run()

@@ -26,10 +26,8 @@ Before setting up the project, ensure you have the following installed:
 First, clone the questions repository and then run the scripts inside to massage the data into the format needed for the Jeopardy Trainer app.
 
 ```bash
-# clone
 git clone https://github.com/chancehl/JeopardyQuestions
 
-# cd
 cd ./JeopardyQuestions
 
 # grant permissions to scripts
@@ -71,17 +69,14 @@ Next, clone the Jeopardy Trainer repository to your local machine:
 **Note**: This should not live inside of the JeopardyQuestions/ directory.
 
 ```bash
-# clone
 git clone https://github.com/chancehl/jeopardy-trainer.git
 
-# cd
 cd jeopardy-trainer
 ```
 
 Lastly, copy over the `combined.json` file from the first step.
 
 ```bash
-# copy
 mv ../JeopardyQuestions/combined.json ../jeopardy-trainer/questions.json
 ```
 

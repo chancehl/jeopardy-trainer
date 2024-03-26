@@ -1,11 +1,32 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os/exec"
+
 	"github.com/chancehl/jeopardy-trainer/internal/handler"
 	"github.com/gin-gonic/gin"
 )
 
+func buildWebPackage() {
+	cmd := exec.Command("npm", "run", "build")
+
+	cmd.Dir = "./web"
+
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		log.Fatalf("Failed to build web package: %s\n", err)
+	}
+
+	fmt.Printf("[npm run build]: %s\n", output)
+}
+
 func main() {
+	// run this on startup
+	buildWebPackage()
+
 	router := gin.Default()
 
 	// static

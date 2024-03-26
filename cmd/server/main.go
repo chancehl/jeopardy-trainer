@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/chancehl/jeopardy-trainer/internal/handler"
 	"github.com/chancehl/jeopardy-trainer/internal/hooks"
 	"github.com/gin-gonic/gin"
@@ -14,17 +12,16 @@ func main() {
 
 	router := gin.Default()
 
-	// static
+	// static assets
 	router.Static("/assets", "./web/dist/assets")
 
-	// ui
+	// ui routes
 	router.GET("/", handler.ServeSPA)
 	router.NoRoute(handler.HandleSPARoute)
 
-	// games
+	// game routes
 	router.GET("/games/:seed", handler.GetGame)
 	router.POST("/games", handler.CreateGame)
 
-	fmt.Println("Starting server...")
 	router.Run()
 }

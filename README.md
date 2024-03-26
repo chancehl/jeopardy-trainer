@@ -74,4 +74,4 @@ After starting the server, open a web browser and navigate to http://localhost:8
   - **`/dist`**: Output from the `npm run build` command.
 - **`questions.json`**: The dataset of Jeopardy questions.
 
-This README was shamelessly [generated with LLM labor 💪🤖](https://github.com/chancehl/gpt-readme)
+This README was shamelessly [generated with LLM labor](https://github.com/chancehl/gpt-readme)💪🤖

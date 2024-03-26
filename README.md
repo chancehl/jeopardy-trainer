@@ -40,6 +40,32 @@ chmod +x ./format.js
 ./combine.sh && node ./format.js
 ```
 
+You should see some output that looks like this if the previous step was successful:
+
+```
+Combining files...
+Processing file 1: ./src/episodes_7001_7500.json
+Processing file 2: ./src/episodes_1001_1500.json
+Processing file 3: ./src/episodes_2501_3000.json
+Processing file 4: ./src/episodes_3501_4000.json
+Processing file 5: ./src/episodes_4501_5000.json
+Processing file 6: ./src/episodes_1501_2000.json
+Processing file 7: ./src/episodes_501_1000.json
+Processing file 8: ./src/episodes_001_500.json
+Processing file 9: ./src/episodes_5501_6000.json
+Processing file 10: ./src/episodes_8001_8500.json
+Processing file 11: ./src/episodes_5001_5500.json
+Processing file 12: ./src/episodes_6001_6500.json
+Processing file 13: ./src/episodes_3001_3500.json
+Processing file 14: ./src/episodes_8501_9000.json
+Processing file 15: ./src/episodes_4001_4500.json
+Processing file 16: ./src/episodes_6501_7000.json
+Processing file 17: ./src/episodes_2001_2500.json
+Successfully combined files into ./combined.json
+Formatting combined.json...
+Successfully formatted question data
+```
+
 Next, clone the Jeopardy Trainer repository to your local machine:
 
 **Note**: This should not live inside of the JeopardyQuestions/ directory.

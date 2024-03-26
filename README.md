@@ -8,9 +8,12 @@ This project serves a Single Page Application (SPA) built with React (using Vite
 
 Before setting up the project, ensure you have the following installed:
 
-- **Go**: Version 1.16 or higher. You can download it from [the official Go website](https://golang.org/dl/).
-- **Node.js**: Version 14.x or higher, which includes `npm` for managing frontend dependencies. Download Node.js from [the official Node.js website](https://nodejs.org/).
-- **Git** (optional): For cloning the repository. Download Git from [git-scm.com](https://git-scm.com/).
+- **Go**: Version 1.16 or higher.
+  - You can download it from [the official Go website](https://golang.org/dl/).
+- **Node.js**: Version 14.x or higher, which includes `npm` for managing frontend dependencies.
+  - Download Node.js from [the official Node.js website](https://nodejs.org/).
+- **Git** (optional): For cloning the repository.
+  - Download Git from [git-scm.com](https://git-scm.com/).
 
 ## Setup
 

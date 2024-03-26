@@ -46,3 +46,8 @@ web/*.ntvs*
 web/*.njsproj
 web/*.sln
 web/*.sw?
+
+.vscode/
+
+# env variables
+.env

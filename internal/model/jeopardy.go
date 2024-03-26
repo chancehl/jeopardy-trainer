@@ -1,21 +1,21 @@
 package model
 
 type JeopardyGame struct {
-	Seed   string
-	Rounds []JeopardyRound
+	Seed   string          `json:"seed"`
+	Rounds []JeopardyRound `json:"rounds"`
 }
 
 type JeopardyQuestion struct {
-	Prompt   string
-	Category string
-	Round    string
-	Value    int
-	Answer   string
-	Id       int
-	GameId   int
+	Prompt   string `json:"prompt"`
+	Category string `json:"category"`
+	Round    string `json:"round"`
+	Value    int    `json:"value"`
+	Answer   string `json:"answer"`
+	Id       int    `json:"id"`
+	GameId   int    `json:"gameId"`
 }
 
 type JeopardyRound struct {
-	Name      string
-	Questions []JeopardyQuestion
+	Name      string             `json:"name"`
+	Questions []JeopardyQuestion `json:"questions"`
 }

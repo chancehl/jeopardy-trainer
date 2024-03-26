@@ -17,9 +17,7 @@ func GetGame(ctx *gin.Context) {
 		Rounds: rounds,
 	}
 
-	body := gin.H{"game": game}
-
-	ctx.JSON(200, body)
+	ctx.JSON(200, game)
 }
 
 func CreateGame(ctx *gin.Context) {
@@ -27,7 +25,5 @@ func CreateGame(ctx *gin.Context) {
 
 	game := model.GenerateJeopardyGame(questions)
 
-	body := gin.H{"game": game}
-
-	ctx.JSON(200, body)
+	ctx.JSON(200, game)
 }

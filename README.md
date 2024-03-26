@@ -35,7 +35,7 @@ chmod +x ./combine.sh
 chmod +x ./format.js
 
 # run scripts (the output of this should be a "combined.json" file)
-./combine.sh && node ./format.js
+./combine.sh && ./format.js
 ```
 
 You should see some output that looks like this if the previous step was successful:

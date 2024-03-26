@@ -10,6 +10,8 @@ import (
 )
 
 func buildWebPackage() {
+	fmt.Println("Building web package...")
+
 	cmd := exec.Command("npm", "run", "build")
 
 	cmd.Dir = "./web"

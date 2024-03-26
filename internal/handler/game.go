@@ -7,7 +7,7 @@ import (
 )
 
 func GetGame(ctx *gin.Context) {
-	allQuestions := parser.LoadQuestions("./questions.json")
+	allQuestions := parser.LoadQuestions("questions.json")
 
 	seed := ctx.Param("seed")
 	rounds := model.GenerateRoundsFromSeed(seed, allQuestions)

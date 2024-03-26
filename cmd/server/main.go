@@ -2,32 +2,15 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os/exec"
 
 	"github.com/chancehl/jeopardy-trainer/internal/handler"
+	"github.com/chancehl/jeopardy-trainer/internal/hooks"
 	"github.com/gin-gonic/gin"
 )
 
-func buildWebPackage() {
-	fmt.Println("Building web package...")
-
-	cmd := exec.Command("npm", "run", "build")
-
-	cmd.Dir = "./web"
-
-	output, err := cmd.CombinedOutput()
-
-	if err != nil {
-		log.Fatalf("Failed to build web package: %s\n", err)
-	}
-
-	fmt.Printf("[npm run build]: %s\n", output)
-}
-
 func main() {
-	// run this on startup
-	buildWebPackage()
+	// execute startup logic
+	hooks.OnServerStart()
 
 	router := gin.Default()
 
@@ -42,5 +25,6 @@ func main() {
 	router.GET("/games/:seed", handler.GetGame)
 	router.POST("/games", handler.CreateGame)
 
+	fmt.Println("Starting server...")
 	router.Run()
 }

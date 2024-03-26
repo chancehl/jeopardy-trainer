@@ -48,14 +48,12 @@ This command compiles your React application and outputs the static files to web
 #### Install Go dependencies:
 
 ```bash
-Copy code
 go mod tidy
 ```
 
 #### Run the Go server:
 
 ```bash
-Copy code
 go run cmd/server/main.go
 ```
 

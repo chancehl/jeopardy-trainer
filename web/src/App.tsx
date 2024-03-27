@@ -3,10 +3,10 @@ import { ReloadIcon, CopyIcon } from '@radix-ui/react-icons'
 
 import './App.css'
 import { Button } from './components/ui/button'
+import { JeopardyGame } from './@types'
 
 function App() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [game, setGame] = useState<any>(null)
+    const [game, setGame] = useState<JeopardyGame>()
     const [loadingGame, setLoadingGame] = useState(false)
 
     const onPlayClick = async () => {
@@ -24,7 +24,9 @@ function App() {
     }
 
     const onCopySeedClick = async () => {
-        await navigator.clipboard.writeText(game.seed)
+        if (game) {
+            await navigator.clipboard.writeText(game.seed)
+        }
     }
 
     return (

@@ -7,6 +7,10 @@
         "skipLibCheck": true,
         "types": ["vite/client", "node"],
         "typeRoots": ["./node_modules/@types/", "./types"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
 
         /* Bundler mode */
         "moduleResolution": "bundler",

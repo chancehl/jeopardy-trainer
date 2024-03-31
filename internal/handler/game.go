@@ -1,13 +1,13 @@
 package handler
 
 import (
+	"github.com/chancehl/jeopardy-trainer/internal/db"
 	"github.com/chancehl/jeopardy-trainer/internal/model"
-	"github.com/chancehl/jeopardy-trainer/internal/parser"
 	"github.com/gin-gonic/gin"
 )
 
 func GetGame(ctx *gin.Context) {
-	allQuestions := parser.LoadQuestions("questions.json")
+	allQuestions := db.LoadQuestions("questions.json")
 
 	seed := ctx.Param("seed")
 	rounds := model.GenerateRoundsFromSeed(seed, allQuestions)
@@ -21,7 +21,7 @@ func GetGame(ctx *gin.Context) {
 }
 
 func CreateGame(ctx *gin.Context) {
-	questions := parser.LoadQuestions("questions.json")
+	questions := db.LoadQuestions("questions.json")
 
 	game := model.GenerateJeopardyGame(questions)
 

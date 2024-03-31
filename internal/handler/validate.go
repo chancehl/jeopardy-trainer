@@ -15,7 +15,7 @@ func ValidateAnswer(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(400, err.Error())
 
 		return
 	}
@@ -23,7 +23,7 @@ func ValidateAnswer(ctx *gin.Context) {
 	questionId, err := strconv.Atoi(id)
 
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(400, "Invalid question id")
 
 		return
 	}

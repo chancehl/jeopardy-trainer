@@ -23,7 +23,7 @@ func main() {
 	router.GET("/games/:seed", handler.GetGame)
 	router.POST("/games", handler.CreateGame)
 
-	// validation routes
+	// question routes
 	router.POST("/questions/:id/validate", handler.ValidateAnswer)
 
 	router.Run()

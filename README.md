@@ -21,7 +21,7 @@ Before setting up the project, ensure you have the following installed:
 
 ## Setup
 
-### Clone the repositories (2)
+### Seed the questions
 
 First, clone the questions repository and then run the scripts inside to massage the data into the format needed for the Jeopardy Trainer app.
 
@@ -63,6 +63,8 @@ Successfully combined files into ./combined.json
 Formatting combined.json...
 Successfully formatted question data
 ```
+
+### Clone the repository
 
 Next, clone the Jeopardy Trainer repository to your local machine:
 

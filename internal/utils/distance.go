@@ -6,12 +6,14 @@ import "math"
 func Levenshtein(correctAnswer string, userAnswer string) (int, int) {
 	m, n := len(correctAnswer), len(userAnswer)
 
+	allowed := ComputeAllowableDistance(correctAnswer)
+
 	if m == 0 {
-		return n, ComputeAllowableDistance(correctAnswer)
+		return n, allowed
 	}
 
 	if n == 0 {
-		return m, ComputeAllowableDistance(correctAnswer)
+		return m, allowed
 	}
 
 	// Create a matrix.
@@ -43,7 +45,7 @@ func Levenshtein(correctAnswer string, userAnswer string) (int, int) {
 		}
 	}
 
-	return d[m][n], ComputeAllowableDistance(correctAnswer)
+	return d[m][n], allowed
 }
 
 func ComputeAllowableDistance(s string) int {

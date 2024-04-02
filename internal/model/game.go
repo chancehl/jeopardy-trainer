@@ -135,12 +135,12 @@ func GenerateRounds(allQuestions []JeopardyQuestion) []JeopardyRound {
 	}
 
 	doubleJeopardyRound := JeopardyRound{
-		Name:      "Jeopardy",
+		Name:      "DoubleJeopardy",
 		Questions: PickRandomQuestions(grouped["DoubleJeopardy"], false),
 	}
 
 	finalJeopardyRound := JeopardyRound{
-		Name:      "Jeopardy",
+		Name:      "FinalJeopardy",
 		Questions: PickRandomQuestions(grouped["FinalJeopardy"], true),
 	}
 

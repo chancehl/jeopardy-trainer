@@ -3,7 +3,7 @@ import { ReloadIcon, CopyIcon } from '@radix-ui/react-icons'
 
 import './App.css'
 import { Button } from './components/ui/button'
-import { LoadFromDialog } from './components/ui/loadFromSeedDialog'
+import { LoadFromDialog } from './components/loadFromSeedDialog'
 import { JeopardyGame } from './@types'
 
 function App() {

@@ -34,10 +34,10 @@ func ValidateAnswer(ctx *gin.Context) {
 		distance, maxDistance := utils.Levenshtein(question.Answer, req.Answer)
 
 		ctx.JSON(200, gin.H{
-			"correct":       distance < maxDistance,
+			"isCorrect":     distance < maxDistance,
 			"correctAnswer": question.Answer,
-			"dist":          distance,
-			"max":           maxDistance,
+			"distance":      distance,
+			"maxDistance":   maxDistance,
 		})
 	} else {
 		ctx.JSON(404, "Missing question")

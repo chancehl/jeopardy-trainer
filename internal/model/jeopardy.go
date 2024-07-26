@@ -16,6 +16,11 @@ type JeopardyQuestion struct {
 }
 
 type JeopardyRound struct {
+	Name       string             `json:"name"`
+	Categories []JeopardyCategory `json:"categories"`
+}
+
+type JeopardyCategory struct {
 	Name      string             `json:"name"`
 	Questions []JeopardyQuestion `json:"questions"`
 }

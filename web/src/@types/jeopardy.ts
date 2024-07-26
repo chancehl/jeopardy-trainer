@@ -10,10 +10,15 @@ export type JeopardyQuestion = {
 
 export type JeopardyRound = {
     name: string
-    questions: JeopardyQuestion[]
+    categories: JeopardyCategory[]
 }
 
 export type JeopardyGame = {
     seed: string
     rounds: JeopardyRound[]
+}
+
+export type JeopardyCategory = {
+    name: string
+    questions: JeopardyQuestion[]
 }

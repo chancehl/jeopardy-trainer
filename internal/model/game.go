@@ -13,7 +13,9 @@ func GenerateSeed(rounds []JeopardyRound) string {
 	questions := []JeopardyQuestion{}
 
 	for _, value := range rounds {
-		questions = append(questions, value.Questions...)
+		for _, category := range value.Categories {
+			questions = append(questions, category.Questions...)
+		}
 	}
 
 	ids := make([]string, len(questions))
@@ -59,18 +61,18 @@ func GenerateRoundsFromSeed(seed string, allQuestions []JeopardyQuestion) []Jeop
 	}
 
 	jeopardyRound := JeopardyRound{
-		Name:      "Jeopardy",
-		Questions: jeopardyQuestions,
+		Name:       "Jeopardy",
+		Categories: GenerateCategoriesFromQuestions(jeopardyQuestions),
 	}
 
 	doubleJeopardyRound := JeopardyRound{
-		Name:      "DoubleJeopardy",
-		Questions: doubleJeopardyQuestions,
+		Name:       "DoubleJeopardy",
+		Categories: GenerateCategoriesFromQuestions(doubleJeopardyQuestions),
 	}
 
 	finalJeopardyRound := JeopardyRound{
-		Name:      "FinalJeopardy",
-		Questions: finalJeopardyQuestions,
+		Name:       "FinalJeopardy",
+		Categories: GenerateCategoriesFromQuestions(finalJeopardyQuestions),
 	}
 
 	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
@@ -126,22 +128,42 @@ func PickRandomQuestions(validQuestions []JeopardyQuestion, isFinalJeopardy bool
 	return questions
 }
 
+func GenerateCategoriesFromQuestions(questions []JeopardyQuestion) []JeopardyCategory {
+	categoryMap := make(map[string][]JeopardyQuestion)
+
+	for _, q := range questions {
+		categoryMap[q.Category] = append(categoryMap[q.Category], q)
+	}
+
+	categories := make([]JeopardyCategory, 0, len(categoryMap))
+
+	for name, qs := range categoryMap {
+		categories = append(categories, JeopardyCategory{Name: name, Questions: qs})
+	}
+
+	return categories
+}
+
 func GenerateRounds(allQuestions []JeopardyQuestion) []JeopardyRound {
 	grouped := GroupByRound(allQuestions)
 
+	jeopardyRoundQuestions := PickRandomQuestions(grouped["Jeopardy"], false)
+	doubleJeopardyRoundQuestions := PickRandomQuestions(grouped["DoubleJeopardy"], false)
+	finalJeopardyRoundQuestions := PickRandomQuestions(grouped["FinalJeopardy"], true)
+
 	jeopardyRound := JeopardyRound{
-		Name:      "Jeopardy",
-		Questions: PickRandomQuestions(grouped["Jeopardy"], false),
+		Name:       "Jeopardy",
+		Categories: GenerateCategoriesFromQuestions(jeopardyRoundQuestions),
 	}
 
 	doubleJeopardyRound := JeopardyRound{
-		Name:      "DoubleJeopardy",
-		Questions: PickRandomQuestions(grouped["DoubleJeopardy"], false),
+		Name:       "DoubleJeopardy",
+		Categories: GenerateCategoriesFromQuestions(doubleJeopardyRoundQuestions),
 	}
 
 	finalJeopardyRound := JeopardyRound{
-		Name:      "FinalJeopardy",
-		Questions: PickRandomQuestions(grouped["FinalJeopardy"], true),
+		Name:       "FinalJeopardy",
+		Categories: GenerateCategoriesFromQuestions(finalJeopardyRoundQuestions),
 	}
 
 	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}

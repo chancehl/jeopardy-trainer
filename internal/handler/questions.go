@@ -16,21 +16,19 @@ func ValidateAnswer(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(400, err.Error())
-
 		return
 	}
 
 	questionId, err := strconv.Atoi(id)
 
 	if err != nil {
-		ctx.JSON(400, "Invalid question id")
-
+		ctx.JSON(400, "invalid question id")
 		return
 	}
 
-	question, found := db.GetQuestionById(questionId)
+	var question model.JeopardyQuestion
 
-	if found {
+	if err := db.FindQuestionById(&question, questionId); err != nil {
 		distance, maxDistance := utils.Levenshtein(question.Answer, req.Answer)
 
 		ctx.JSON(200, gin.H{

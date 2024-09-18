@@ -31,7 +31,7 @@ function App() {
         try {
             setLoadingFromSeed(true)
 
-            const response = await fetch(`/games/${seed}`)
+            const response = await fetch(`/game/${seed}`)
 
             const data = await response.json()
 

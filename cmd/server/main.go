@@ -20,8 +20,8 @@ func main() {
 	router.NoRoute(handler.HandleSPARoute)
 
 	// game routes
-	router.GET("/games/:seed", handler.GetGame)
-	router.POST("/games", handler.CreateGame)
+	router.GET("/game/:seed", handler.GetGame)
+	router.POST("/game", handler.CreateGame)
 
 	// question routes
 	router.POST("/questions/:id/validate", handler.ValidateAnswer)

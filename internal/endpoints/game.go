@@ -11,7 +11,7 @@ import (
 func GetGame(ctx *gin.Context) {
 	allQuestions, err := db.LoadQuestions("questions.json")
 	if err != nil {
-		ctx.JSON(500, errors.NewInternalServiceError("failed to load questions", err))
+		ctx.JSON(500, errors.NewInternalServiceErrorJSON("failed to load questions", err))
 		return
 	}
 
@@ -26,7 +26,7 @@ func GetGame(ctx *gin.Context) {
 func CreateGame(ctx *gin.Context) {
 	questions, err := db.LoadQuestions("questions.json")
 	if err != nil {
-		ctx.JSON(500, errors.NewInternalServiceError("could not load questions", err))
+		ctx.JSON(500, errors.NewInternalServiceErrorJSON("could not load questions", err))
 		return
 	}
 

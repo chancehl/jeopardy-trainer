@@ -5,6 +5,7 @@ import (
 
 	"github.com/chancehl/jeopardy-trainer/internal/db"
 	"github.com/chancehl/jeopardy-trainer/internal/model"
+	"github.com/chancehl/jeopardy-trainer/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,9 +17,11 @@ func GetGame(ctx *gin.Context) {
 	}
 
 	seed := ctx.Param("seed")
-	rounds := model.GenerateRoundsFromSeed(seed, allQuestions)
+	rounds := service.GenerateRoundsFromSeed(seed, allQuestions)
 
-	ctx.JSON(200, model.JeopardyGame{Seed: seed, Rounds: rounds})
+	game := model.JeopardyGame{Seed: seed, Rounds: rounds}
+
+	ctx.JSON(200, game)
 }
 
 func CreateGame(ctx *gin.Context) {
@@ -28,5 +31,7 @@ func CreateGame(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, model.GenerateJeopardyGame(questions))
+	game := service.GenerateJeopardyGame(questions)
+
+	ctx.JSON(200, game)
 }

@@ -1,16 +1,18 @@
-package model
+package service
 
 import (
 	"encoding/base64"
 	"math/rand"
 	"strconv"
 	"strings"
+
+	"github.com/chancehl/jeopardy-trainer/internal/model"
 )
 
 const CATEGORY_COUNT = 6
 
-func GenerateSeed(rounds []JeopardyRound) string {
-	questions := []JeopardyQuestion{}
+func GenerateSeed(rounds []model.JeopardyRound) string {
+	questions := []model.JeopardyQuestion{}
 
 	for _, value := range rounds {
 		for _, category := range value.Categories {
@@ -29,7 +31,7 @@ func GenerateSeed(rounds []JeopardyRound) string {
 	return seed
 }
 
-func GenerateRoundsFromSeed(seed string, allQuestions []JeopardyQuestion) []JeopardyRound {
+func GenerateRoundsFromSeed(seed string, allQuestions []model.JeopardyQuestion) []model.JeopardyRound {
 	value, _ := base64.StdEncoding.DecodeString(seed)
 
 	stringIds := strings.Split(string(value), ",")
@@ -42,9 +44,9 @@ func GenerateRoundsFromSeed(seed string, allQuestions []JeopardyQuestion) []Jeop
 		ids = append(ids, i)
 	}
 
-	jeopardyQuestions := []JeopardyQuestion{}
-	doubleJeopardyQuestions := []JeopardyQuestion{}
-	finalJeopardyQuestions := []JeopardyQuestion{}
+	jeopardyQuestions := []model.JeopardyQuestion{}
+	doubleJeopardyQuestions := []model.JeopardyQuestion{}
+	finalJeopardyQuestions := []model.JeopardyQuestion{}
 
 	for _, id := range ids {
 		for _, question := range allQuestions {
@@ -60,26 +62,26 @@ func GenerateRoundsFromSeed(seed string, allQuestions []JeopardyQuestion) []Jeop
 		}
 	}
 
-	jeopardyRound := JeopardyRound{
+	jeopardyRound := model.JeopardyRound{
 		Name:       "Jeopardy",
 		Categories: GenerateCategoriesFromQuestions(jeopardyQuestions),
 	}
 
-	doubleJeopardyRound := JeopardyRound{
+	doubleJeopardyRound := model.JeopardyRound{
 		Name:       "DoubleJeopardy",
 		Categories: GenerateCategoriesFromQuestions(doubleJeopardyQuestions),
 	}
 
-	finalJeopardyRound := JeopardyRound{
+	finalJeopardyRound := model.JeopardyRound{
 		Name:       "FinalJeopardy",
 		Categories: GenerateCategoriesFromQuestions(finalJeopardyQuestions),
 	}
 
-	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
+	return []model.JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
 }
 
-func GroupByRound(questions []JeopardyQuestion) map[string][]JeopardyQuestion {
-	grouped := make(map[string][]JeopardyQuestion)
+func GroupByRound(questions []model.JeopardyQuestion) map[string][]model.JeopardyQuestion {
+	grouped := make(map[string][]model.JeopardyQuestion)
 
 	for _, question := range questions {
 		grouped[question.Round] = append(grouped[question.Round], question)
@@ -88,8 +90,8 @@ func GroupByRound(questions []JeopardyQuestion) map[string][]JeopardyQuestion {
 	return grouped
 }
 
-func PickRandomQuestionCategory(questions []JeopardyQuestion) []JeopardyQuestion {
-	categoryQuestions := []JeopardyQuestion{}
+func PickRandomQuestionCategory(questions []model.JeopardyQuestion) []model.JeopardyQuestion {
+	categoryQuestions := []model.JeopardyQuestion{}
 
 	randomIndex := rand.Intn(len(questions))
 	randomQuestion := questions[randomIndex]
@@ -103,15 +105,15 @@ func PickRandomQuestionCategory(questions []JeopardyQuestion) []JeopardyQuestion
 	return categoryQuestions
 }
 
-func PickRandomQuestion(questions []JeopardyQuestion) JeopardyQuestion {
+func PickRandomQuestion(questions []model.JeopardyQuestion) model.JeopardyQuestion {
 	randomIndex := rand.Intn(len(questions))
 	randomQuestion := questions[randomIndex]
 
 	return randomQuestion
 }
 
-func PickRandomQuestions(validQuestions []JeopardyQuestion, isFinalJeopardy bool) []JeopardyQuestion {
-	questions := []JeopardyQuestion{}
+func PickRandomQuestions(validQuestions []model.JeopardyQuestion, isFinalJeopardy bool) []model.JeopardyQuestion {
+	questions := []model.JeopardyQuestion{}
 
 	if isFinalJeopardy {
 		questions = append(questions, PickRandomQuestion(validQuestions))
@@ -128,49 +130,49 @@ func PickRandomQuestions(validQuestions []JeopardyQuestion, isFinalJeopardy bool
 	return questions
 }
 
-func GenerateCategoriesFromQuestions(questions []JeopardyQuestion) []JeopardyCategory {
-	categoryMap := make(map[string][]JeopardyQuestion)
+func GenerateCategoriesFromQuestions(questions []model.JeopardyQuestion) []model.JeopardyCategory {
+	categoryMap := make(map[string][]model.JeopardyQuestion)
 
 	for _, q := range questions {
 		categoryMap[q.Category] = append(categoryMap[q.Category], q)
 	}
 
-	categories := make([]JeopardyCategory, 0, len(categoryMap))
+	categories := make([]model.JeopardyCategory, 0, len(categoryMap))
 
 	for name, qs := range categoryMap {
-		categories = append(categories, JeopardyCategory{Name: name, Questions: qs})
+		categories = append(categories, model.JeopardyCategory{Name: name, Questions: qs})
 	}
 
 	return categories
 }
 
-func GenerateRounds(allQuestions []JeopardyQuestion) []JeopardyRound {
+func GenerateRounds(allQuestions []model.JeopardyQuestion) []model.JeopardyRound {
 	grouped := GroupByRound(allQuestions)
 
 	jeopardyRoundQuestions := PickRandomQuestions(grouped["Jeopardy"], false)
 	doubleJeopardyRoundQuestions := PickRandomQuestions(grouped["DoubleJeopardy"], false)
 	finalJeopardyRoundQuestions := PickRandomQuestions(grouped["FinalJeopardy"], true)
 
-	jeopardyRound := JeopardyRound{
+	jeopardyRound := model.JeopardyRound{
 		Name:       "Jeopardy",
 		Categories: GenerateCategoriesFromQuestions(jeopardyRoundQuestions),
 	}
 
-	doubleJeopardyRound := JeopardyRound{
+	doubleJeopardyRound := model.JeopardyRound{
 		Name:       "DoubleJeopardy",
 		Categories: GenerateCategoriesFromQuestions(doubleJeopardyRoundQuestions),
 	}
 
-	finalJeopardyRound := JeopardyRound{
+	finalJeopardyRound := model.JeopardyRound{
 		Name:       "FinalJeopardy",
 		Categories: GenerateCategoriesFromQuestions(finalJeopardyRoundQuestions),
 	}
 
-	return []JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
+	return []model.JeopardyRound{jeopardyRound, doubleJeopardyRound, finalJeopardyRound}
 }
 
-func GenerateJeopardyGame(allQuestions []JeopardyQuestion) JeopardyGame {
-	var game JeopardyGame
+func GenerateJeopardyGame(allQuestions []model.JeopardyQuestion) model.JeopardyGame {
+	var game model.JeopardyGame
 
 	game.Rounds = GenerateRounds(allQuestions)
 	game.Seed = GenerateSeed(game.Rounds)

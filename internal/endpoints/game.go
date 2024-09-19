@@ -1,9 +1,8 @@
-package handler
+package endpoints
 
 import (
-	"fmt"
-
 	"github.com/chancehl/jeopardy-trainer/internal/db"
+	"github.com/chancehl/jeopardy-trainer/internal/errors"
 	"github.com/chancehl/jeopardy-trainer/internal/model"
 	"github.com/chancehl/jeopardy-trainer/internal/service"
 	"github.com/gin-gonic/gin"
@@ -12,7 +11,7 @@ import (
 func GetGame(ctx *gin.Context) {
 	allQuestions, err := db.LoadQuestions("questions.json")
 	if err != nil {
-		fmt.Printf("failed to load questions from json: %v\n", err)
+		ctx.JSON(500, errors.NewInternalServiceError("failed to load questions", err))
 		return
 	}
 
@@ -27,7 +26,7 @@ func GetGame(ctx *gin.Context) {
 func CreateGame(ctx *gin.Context) {
 	questions, err := db.LoadQuestions("questions.json")
 	if err != nil {
-		fmt.Printf("could not load questions from json: %v\n", err)
+		ctx.JSON(500, errors.NewInternalServiceError("could not load questions", err))
 		return
 	}
 

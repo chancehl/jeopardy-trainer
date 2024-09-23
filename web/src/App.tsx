@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { ReloadIcon, CopyIcon } from '@radix-ui/react-icons'
 
-import './App.css'
-import { Button } from './components/ui/button'
-import { LoadFromDialog } from './components/loadFromSeedDialog'
 import { JeopardyGame } from './@types'
+import { Button, LoadFromDialog } from './components'
+
+import './App.css'
 
 function App() {
     const [game, setGame] = useState<JeopardyGame>()
@@ -15,7 +15,7 @@ function App() {
         try {
             setLoadingGame(true)
 
-            const response = await fetch('/games', { method: 'POST' })
+            const response = await fetch('/game', { method: 'POST' })
 
             const data = await response.json()
 

@@ -9,6 +9,9 @@ import (
 func main() {
 	router := gin.Default()
 
+	// middleware
+	router.Use(CORSMiddleware())
+
 	// static assets
 	router.Static("/assets", "./web/dist/assets")
 
@@ -17,8 +20,8 @@ func main() {
 	router.NoRoute(endpoints.HandleSPARoute)
 
 	// game routes
-	router.GET("/game/:seed", endpoints.GetGame)
-	router.POST("/game", endpoints.CreateGame)
+	router.GET("/games/:seed", endpoints.GetGame)
+	router.POST("/games", endpoints.CreateGame)
 
 	// question routes
 	router.POST("/questions/:id/validate", endpoints.ValidateAnswer)

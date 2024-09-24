@@ -172,10 +172,11 @@ func GenerateRounds(allQuestions []model.JeopardyQuestion) []model.JeopardyRound
 }
 
 func GenerateJeopardyGame(allQuestions []model.JeopardyQuestion) model.JeopardyGame {
-	var game model.JeopardyGame
+	rounds := GenerateRounds(allQuestions)
+	seed := GenerateSeed(rounds)
 
-	game.Rounds = GenerateRounds(allQuestions)
-	game.Seed = GenerateSeed(game.Rounds)
-
-	return game
+	return model.JeopardyGame{
+		Rounds: rounds,
+		Seed:   seed,
+	}
 }

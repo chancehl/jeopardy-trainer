@@ -1,9 +1,9 @@
+import { useState } from 'react'
 import { CopyIcon, ReloadIcon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 
 import { createGame } from '@/api'
 import { Button } from '@/components'
-import { useState } from 'react'
 
 export const HomePage = () => {
     const [enabled, setEnabled] = useState(false)
